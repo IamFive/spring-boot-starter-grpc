@@ -10,11 +10,11 @@ Spring boot starter for [gRPC](http://www.grpc.io/).
 - [x] Scan for gRPC service implement annotated with @GRpcService
 - [x] global and customer gRPC interceptors support
 - [x] gRPC service daemon runner
-- []  TLS Configuration
+- [ ]  TLS Configuration
 
 ### Load balance support
-- [] etcd & consul service register plugin
-- [] HAProxy sample
+- [ ] etcd & consul service register plugin
+- [ ] HAProxy sample
 
 
 ## Tutorial

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=net.turnbig.spring.boot.grpc.autoconfig.GrpcAutoConfiguration

@@ -18,26 +18,30 @@ Spring boot starter for [gRPC](http://www.grpc.io/).
 
 
 ## Tutorial
+
 - git clone the project
 - run `mvn clean package install` to install jar to local
 - then check the example project under `spring-boot-starter-grpc-example` folder
 
 ## Usage
 
-The service definition from `.proto` file looks like this :
-[source,proto]
-----
+### Implement and Run gRPC service
+
+1. Define gRPC service with protobuf 3 format
+
+```exmaple.proto
 service Greeter {
     rpc SayHello ( HelloRequest) returns (  HelloReply) {}
 }
-----
+```
 
-Note the generated `io.grpc.examples.GreeterGrpc.GreeterImplBase` class that extends `io.grpc.BindableService`.(The generated classes were intentionally committed for demo purposes).
+2. Generate gRPC-java code from the service defination files(*.proto)
 
-All you need to do is to annotate your service implementation with `@org.lognet.springboot.grpc.GRpcService`
+```mvn generate-sources```
 
-[source,java]
-----
+3. implement the gRPC service and annatation the service with `@GRpcService`
+
+```java
     @GRpcService
     public static class GreeterService extends  GreeterGrpc.GreeterImplBase{
         @Override
@@ -47,37 +51,37 @@ All you need to do is to annotate your service implementation with `@org.lognet.
             responseObserver.onCompleted();
         }
     }
-----
+```
 
-=== Interceptors support
+4. spring application context now will auto scan and run the gRPC service
+
+### Interceptors support
 The starter supports the registration of two kinds of interceptors: _Global_  and _Per Service_. +
 In both cases the interceptor has to implement `io.grpc.ServerInterceptor` interface.
 
 - Per service
 
-[source,java]
-----
+
+```
 @GRpcService(interceptors = { LogInterceptor.class })
 public  class GreeterService extends  GreeterGrpc.GreeterImplBase{
     // ommited
 }
-----
+```
 `LogInterceptor` will be instantiated via spring factory if there is bean of type `LogInterceptor`, or via no-args constructor otherwise.
 
 - Global
 
-[source,java]
-----
+```
 @GRpcGlobalInterceptor
 public  class MyInterceptor implements ServerInterceptor{
     // ommited
 }
-----
+```
 
 The annotation on java config factory method is also supported :
 
-[source,java]
-----
+```
  @Configuration
  public class MyConfig{
      @Bean
@@ -92,16 +96,15 @@ The annotation on java config factory method is also supported :
          };
      }
  }
-----
+```
 
 The particular service also has the opportunity to disable the global interceptors :
 
-[source,java]
-----
+```
 @GRpcService(applyGlobalInterceptors = false)
 public  class GreeterService extends  GreeterGrpc.GreeterImplBase{
     // ommited
 }
-----
+```
 
 

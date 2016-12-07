@@ -22,7 +22,7 @@ import net.turnbig.spring.boot.grpc.autoconfig.GRpcServerProperties;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { Sample.class })
-public class DemoAppTest {
+public class SampleTest {
 
 	private ManagedChannel channel;
 
@@ -38,7 +38,7 @@ public class DemoAppTest {
 
 	@Before
 	public void setup() {
-		channel = ManagedChannelBuilder.forAddress("localhost", properties.getPort()).usePlaintext(true).build();
+		channel = ManagedChannelBuilder.forAddress("0.0.0.0", properties.getPort()).usePlaintext(true).build();
 	}
 
 	@After
@@ -47,7 +47,7 @@ public class DemoAppTest {
 	}
 
 	@Test
-	public void simpleGreeting() throws ExecutionException, InterruptedException {
+	public void greetTest() throws ExecutionException, InterruptedException {
 		String name = "John";
 		final GreeterGrpc.GreeterFutureStub greeterFutureStub = GreeterGrpc.newFutureStub(channel);
 		final GreeterOuterClass.HelloRequest helloRequest = GreeterOuterClass.HelloRequest.newBuilder().setName(name)
